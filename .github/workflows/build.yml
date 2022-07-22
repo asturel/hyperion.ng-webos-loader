@@ -28,7 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          repository: hyperion-project/hyperion.ng
+          repository: asturel/hyperion.ng
           ref: master
           path: hyperion.ng
           submodules: recursive
