@@ -176,8 +176,9 @@ static bool power_callback(LSHandle* sh __attribute__((unused)), LSMessage* msg,
 
     raw_buffer state_buf = jstring_get(state_ref);
     const char* state_str = state_buf.m_str;
-    bool power_active = strcmp(state_str, "Active") == 0;
-    bool power_active_standby = strcmp(state_str, "Active Standby") == 0;
+    bool processing = jobject_containskey(parsed, j_cstr_to_buffer("processing"));
+    bool power_active = strcmp(state_str, "Active") == 0 && !processing;
+    bool power_active_standby = strcmp(state_str, "Active Standby") == 0 && !processing;
     if (!is_running(service->daemon_pid) && power_active && service->power_paused) {
         INFO("Resuming service after power pause");
         service->power_paused = false;
