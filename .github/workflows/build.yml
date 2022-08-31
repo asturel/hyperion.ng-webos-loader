@@ -117,10 +117,10 @@ jobs:
             -DENABLE_QT=OFF \
             -DENABLE_EFFECTENGINE=OFF \
             -DENABLE_JSONCHECKS=OFF \
-            -DENABLE_DEV_SERIAL=OFF \
-            -DENABLE_DEV_USB_HID=OFF \
+            -DENABLE_DEV_SERIAL=ON \
+            -DENABLE_DEV_USB_HID=ON \
             -DENABLE_DEV_WS281XPWM=OFF \
-            -DENABLE_DEV_TINKERFORGE=OFF \
+            -DENABLE_DEV_TINKERFORGE=ON \
             -DENABLE_MDNS=ON \
             -DENABLE_DEPLOY_DEPENDENCIES=OFF \
             -DENABLE_BOBLIGHT_SERVER=ON \
@@ -137,7 +137,7 @@ jobs:
           mkdir ./release
           cp -r ./${{ env.BUILD_DIR_CROSS }}/bin/* ./release/
           find ./release
-
+      
       - name: Copy dependencies to release/
         env:
           dependency_libs: libpng16.so.16 libjpeg.so.8 libcrypto.so.1.1 libz.so.1 libssl.so.1.1 libQt5Sql.so.5.15.2 libpcre2-16.so.0 libQt5Gui.so.5 libQt5Network.so.5 libQt5Widgets.so.5 libk5crypto.so.3 libatomic.so.1 libQt5Core.so.5 libkrb5support.so.0 libcom_err.so.3 libstdc++.so.6 libkrb5.so.3 libQt5Sql.so.5 libgssapi_krb5.so.2 libQt5SerialPort.so.5 libQt5Sql.so.5.15 libusb-1.0.so.0
@@ -149,7 +149,7 @@ jobs:
           cp ${TOOLCHAIN_DIR}/arm-webos-linux-gnueabi/sysroot/usr/lib/qt/plugins/imageformats/libqico.so ./release/imageformats/
           cp ${TOOLCHAIN_DIR}/arm-webos-linux-gnueabi/sysroot/usr/lib/qt/plugins/imageformats/libqjpeg.so ./release/imageformats/
           find ./release
-
+      
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
