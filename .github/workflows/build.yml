@@ -120,7 +120,7 @@ jobs:
             -DHYPERION_LIGHT=ON \
             -DENABLE_QT=OFF \
             -DENABLE_EFFECTENGINE=ON \
-            -DENABLE_JSONCHECKS=OFF \
+            -DENABLE_JSONCHECKS=ON \
             -DENABLE_DEV_SERIAL=ON \
             -DENABLE_DEV_USB_HID=ON \
             -DENABLE_DEV_WS281XPWM=OFF \
