@@ -20,7 +20,7 @@ env:
 
 jobs:
   build_hyperion_ng:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     defaults:
       run:
         working-directory: ./hyperion.ng
