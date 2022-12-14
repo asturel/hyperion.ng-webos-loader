@@ -184,7 +184,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
-
+          cache: 'npm'
+          cache-dependency-path: hyperion.ng-build/package-lock.json
       - name: Download and unpack toolchain
         working-directory: /opt
         run: |
