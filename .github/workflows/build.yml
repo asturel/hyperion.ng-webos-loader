@@ -20,7 +20,7 @@ env:
 
 jobs:
   build_hyperion_ng:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     defaults:
       run:
         working-directory: ./hyperion.ng
@@ -164,11 +164,11 @@ jobs:
           if-no-files-found: error
 
   build_ipk:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: build_hyperion_ng
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
 
@@ -181,10 +181,11 @@ jobs:
         run: ls -R
 
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: 14.x
-
+          node-version: 16
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
       - name: Download and unpack toolchain
         working-directory: /opt
         run: |
