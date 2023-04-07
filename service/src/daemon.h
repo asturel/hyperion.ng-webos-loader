@@ -14,4 +14,6 @@ void *execution_task(void *data);
 
 int daemon_start(service_t* service);
 int daemon_stop(service_t* service);
+int daemon_pause(service_t* service);
+int daemon_resume(service_t* service);
 int daemon_version(service_t* service);

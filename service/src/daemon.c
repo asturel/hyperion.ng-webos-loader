@@ -83,6 +83,34 @@ int daemon_terminate(service_t *service)
     return res;
 }
 
+int daemon_pause(service_t *service)
+{
+    int res = 0;
+
+    if (is_running(service->daemon_pid)) {
+        res = kill(service->daemon_pid, SIGUSR1);
+        if (res != 0) {
+            ERR("kill failed, res=%d", res);
+            return 1;
+        }
+    }
+    return res;
+}
+
+int daemon_resume(service_t *service)
+{
+    int res = 0;
+
+    if (is_running(service->daemon_pid)) {
+        res = kill(service->daemon_pid, SIGUSR2);
+        if (res != 0) {
+            ERR("kill failed, res=%d", res);
+            return 1;
+        }
+    }
+    return res;
+}
+
 void *execution_task(void *data)
 {
     int res = 0;

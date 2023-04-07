@@ -189,6 +189,18 @@ static bool power_callback(LSHandle* sh __attribute__((unused)), LSMessage* msg,
         daemon_stop(service);
     }
 
+    if (!service->power_paused && is_running(service->daemon_pid)) {
+        if (power_active && service->power_suspended) {
+            INFO("Resuming service after suspend.");
+            service->power_suspended = false;
+            daemon_resume(service);
+        } else if (!power_active && !service->power_suspended) {
+            INFO("Suspending service due to power event...");
+            service->power_suspended = true;
+            daemon_pause(service);
+        }
+    }
+
     jstring_free_buffer(state_buf);
     j_release(&parsed);
 

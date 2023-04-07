@@ -29,6 +29,7 @@ typedef struct {
     pid_t daemon_pid;
     pthread_t execution_thread;
     bool power_paused;
+    bool power_suspended;
 } service_t;
 
 int service_start(service_t* service);
