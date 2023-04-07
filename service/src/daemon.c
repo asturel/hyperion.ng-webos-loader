@@ -6,6 +6,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <signal.h>
+#include <fcntl.h>
 #include "daemon.h"
 #include "log.h"
 
@@ -46,9 +47,22 @@ int daemon_spawn(pid_t *pid)
     asprintf(&python_home, "PYTHONHOME=%s/python", DAEMON_PATH);
 
     char *env_vars[] = {env_library_path, env_armcap, python_home, "HOME=/home/root", NULL};
-    char *argv[] = {application_executable_path, NULL};
+    char *argv[] = {application_executable_path, "-d", NULL};
 
-    res = posix_spawn(pid, application_executable_path, NULL, NULL, argv, env_vars);
+    posix_spawn_file_actions_t child_fd_actions;
+    if ((res = posix_spawn_file_actions_init (&child_fd_actions)))
+        ERR ("posix_spawn_file_actions_init: %d", res);
+
+    if ((res = posix_spawn_file_actions_addopen (&child_fd_actions, 1, "/tmp/hyperion-debug.log",
+            O_WRONLY | O_CREAT | O_TRUNC, 0644)))
+        ERR ("posix_spawn_file_actions_addopen: %d", res);
+
+    if ((res = posix_spawn_file_actions_adddup2 (&child_fd_actions, 1, 2)))
+        ERR ("posix_spawn_file_actions_adddup2: %d", res);
+
+    res = posix_spawn(pid, application_executable_path, &child_fd_actions, NULL, argv, env_vars);
+
+    //res = posix_spawn(pid, application_executable_path, NULL, NULL, argv, env_vars);
     DBG("pid=%d, application_path=%s, env={%s,%s}",
             *pid, application_executable_path, env_library_path, env_armcap);
 
